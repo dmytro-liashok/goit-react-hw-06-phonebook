@@ -1,13 +1,16 @@
 import { nanoid } from 'nanoid';
-import PropTypes from 'prop-types';
 import css from './Filter.module.css';
+import { selectorFilter, setFilter } from 'redux/filterSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
-const Filter = ({ filterValue, onFilter }) => {
+export default function Filter() {
   const filterId = nanoid();
+  const filter = useSelector(selectorFilter);
+  const dispatch = useDispatch();
 
   const handleChange = e => {
     const value = e.currentTarget.value;
-    onFilter(value);
+    dispatch(setFilter(value));
   };
 
   return (
@@ -16,18 +19,11 @@ const Filter = ({ filterValue, onFilter }) => {
         <span className={css.spanFilter}>Find Contacts by name</span>
         <input
           className={css.inputFilter}
-          value={filterValue}
+          value={filter}
           onChange={handleChange}
           id={filterId}
         />
       </label>
     </>
   );
-};
-
-Filter.propType = {
-  filterValue: PropTypes.string.isRequired,
-  onFilter: PropTypes.func.isRequired,
-};
-
-export default Filter;
+}
